@@ -1,16 +1,16 @@
 # Welcome to React Router
 
-A modern, production-ready template for building full-stack React applications using React Router.
+A modern, production-ready template for building full-stack React applications
+using React Router. It can be used as a starter template for initializing a
+react-router v7 app. It has preconfigured:
 
-It can be used as a starter template for initializing a react-router v7 app. It has preconfigured:
-
-Eslint (v9)
-Prettier
-LintStaged
-Husky
-Shadcn
-Tailwindcss v4
-Flat routes
+- Eslint (v9)
+- Prettier
+- LintStaged
+- Husky
+- Shadcn
+- Tailwindcss v4
+- Flat routes
 
 ## Features
 
@@ -59,8 +59,7 @@ This template includes three Dockerfiles optimized for different package manager
 - `Dockerfile` - for npm
 - `Dockerfile.pnpm` - for pnpm
 - `Dockerfile.bun` - for bun
-
-To build and run using Docker:
+  To build and run using Docker:
 
 ```bash
 # For npm
@@ -76,7 +75,8 @@ docker build -f Dockerfile.bun -t my-app .
 docker run -p 3000:3000 my-app
 ```
 
-The containerized application can be deployed to any platform that supports Docker, including:
+The containerized application can be deployed to any platform that supports
+Docker, including:
 
 - AWS ECS
 - Google Cloud Run
@@ -91,7 +91,7 @@ If you're familiar with deploying Node applications, the built-in app server is 
 
 Make sure to deploy the output of `npm run build`
 
-```
+```mermaid
 ├── package.json
 ├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
 ├── build/
@@ -101,7 +101,9 @@ Make sure to deploy the output of `npm run build`
 
 ## Styling
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+This template comes with [Tailwind CSS](https://tailwindcss.com/) already
+configured for a simple default starting experience. You can use whatever CSS
+framework you prefer.
 
 ---
 
