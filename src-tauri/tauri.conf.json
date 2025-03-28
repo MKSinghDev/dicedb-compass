@@ -2,9 +2,9 @@
     "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
     "productName": "dicedb-insight",
     "version": "0.1.0",
-    "identifier": "com.tauri.dev",
+    "identifier": "dicedb-insight.mksingh.dev",
     "build": {
-        "frontendDist": "../build",
+        "frontendDist": "../build/client",
         "devUrl": "http://localhost:5173",
         "beforeDevCommand": "bun dev",
         "beforeBuildCommand": "bun run build"
