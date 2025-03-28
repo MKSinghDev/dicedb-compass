@@ -12,11 +12,13 @@
     "app": {
         "windows": [
             {
-                "title": "DiceDB Insight",
+                "title": "DiceDB insight",
                 "width": 800,
                 "height": 600,
                 "resizable": true,
-                "fullscreen": false
+                "fullscreen": false,
+                "minWidth": 995,
+                "minHeight": 675
             }
         ],
         "security": {
