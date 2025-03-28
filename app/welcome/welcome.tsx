@@ -1,5 +1,7 @@
-import AddNewConnectionButton from '~/components/atoms/add-new-connection-button';
+import { PlusCircle } from 'lucide-react';
+
 import Logo from '~/components/atoms/logo';
+import { Button } from '~/components/ui/button';
 
 export function Welcome() {
     return (
@@ -10,7 +12,9 @@ export function Welcome() {
                 </header>
                 <div className="max-w-fit w-full space-y-6 px-4">
                     <div className="flex flex-col gap-4">
-                        <AddNewConnectionButton />
+                        <Button>
+                            <PlusCircle /> Connect a DiceDB
+                        </Button>
                     </div>
                     <nav className="p-6 space-y-4">
                         <p className="leading-6 text-gray-700 dark:text-gray-200 text-center">What&apos;s next?</p>

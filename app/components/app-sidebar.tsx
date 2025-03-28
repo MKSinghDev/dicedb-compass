@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Bell, Database, DatabaseZap, type LucideIcon, ShieldQuestion } from 'lucide-react';
+import { Bell, Database, DatabaseZap, type LucideIcon, PlusCircle, ShieldQuestion } from 'lucide-react';
 
 import { NavMain } from '~/components/nav-main';
 import { NavProjects } from '~/components/nav-projects';
@@ -16,7 +16,6 @@ import {
     SidebarRail,
 } from '~/components/ui/sidebar';
 
-import AddNewConnectionButton from './atoms/add-new-connection-button';
 import Logo from './atoms/logo';
 import CloudDatabase from './icons/cloud-database';
 
@@ -123,9 +122,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarContent>
                 <ScrollArea className="h-full">
                     <div className="p-2">
-                        <AddNewConnectionButton size="sm" variant="secondary" className="w-full">
-                            New connection
-                        </AddNewConnectionButton>
+                        <SidebarMenuButton variant="outline" tooltip="New Connection" className="w-full">
+                            <PlusCircle />
+                            <span className="whitespace-nowrap">New Connection</span>
+                        </SidebarMenuButton>
                     </div>
                     <NavMain items={data.connections} />
                 </ScrollArea>
