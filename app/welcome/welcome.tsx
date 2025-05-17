@@ -1,5 +1,6 @@
 import { PlusCircle } from 'lucide-react';
 
+import { openUrl } from '@tauri-apps/plugin-opener';
 import Logo from '~/components/atoms/logo';
 import { Button } from '~/components/ui/button';
 
@@ -21,15 +22,14 @@ export function Welcome() {
                         <ul>
                             {resources.map(({ href, text, icon }) => (
                                 <li key={href}>
-                                    <a
-                                        className="group flex items-center gap-3 self-stretch p-3 leading-normal text-blue-700 hover:underline dark:text-blue-500"
-                                        href={href}
-                                        target="_blank"
-                                        rel="noreferrer"
+                                    <Button
+                                        variant="link"
+                                        className="group flex items-center gap-3 self-stretch cursor-pointer p-3 leading-normal text-blue-700 hover:underline dark:text-blue-500"
+                                        onClick={() => openUrl(href)}
                                     >
                                         {icon}
                                         {text}
-                                    </a>
+                                    </Button>
                                 </li>
                             ))}
                         </ul>
