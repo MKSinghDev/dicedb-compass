@@ -96,6 +96,7 @@ version = "0.1.0"
 dependencies = [
  "dice",
  "log",
+ "redb",
  "serde",
  "serde_json",
  "tauri",
@@ -103,6 +104,7 @@ dependencies = [
  "tauri-plugin-log",
  "tauri-plugin-opener",
  "tauri-plugin-single-instance",
+ "thiserror 2.0.12",
 ]
 
 [[package]]
@@ -3035,6 +3037,15 @@ name = "raw-window-handle"
 version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "20675572f6f24e9e76ef639bc5552774ed45f1c30e2951e1e99c59888861c539"
+
+[[package]]
+name = "redb"
+version = "2.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "34bc6763177194266fc3773e2b2bb3693f7b02fdf461e285aa33202e3164b74e"
+dependencies = [
+ "libc",
+]
 
 [[package]]
 name = "redox_syscall"

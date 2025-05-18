@@ -1,10 +1,15 @@
 import { PlusCircle } from 'lucide-react';
 
+import { invoke } from '@tauri-apps/api/core';
 import { openUrl } from '@tauri-apps/plugin-opener';
 import Logo from '~/components/atoms/logo';
 import { Button } from '~/components/ui/button';
 
 export function Welcome() {
+    const handleDbTest = async () => {
+        const result = await invoke('db_test');
+        console.log(result);
+    };
     return (
         <main className="flex items-center justify-center pt-16 pb-4">
             <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
@@ -13,7 +18,7 @@ export function Welcome() {
                 </header>
                 <div className="max-w-fit w-full space-y-6 px-4">
                     <div className="flex flex-col gap-4">
-                        <Button>
+                        <Button onClick={handleDbTest}>
                             <PlusCircle /> Connect a DiceDB
                         </Button>
                     </div>
@@ -70,8 +75,8 @@ const resources = [
         ),
     },
     {
-        href: 'https://github.com/BadgerBloke/dicedb-insight',
-        text: 'Give a star to DiceDB insight',
+        href: 'https://github.com/BadgerBloke/dicedb-compass',
+        text: 'Give a star to DiceDB compass',
         icon: (
             <svg width="20" height="20" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path

@@ -1,5 +1,5 @@
-# DiceDB insight (Under development)
+# DiceDB compass (Under development)
 
-![DiceDB insight](https://github.com/BadgerBloke/dicedb-insight/blob/trunk/public/images/app.png)
+![DiceDB compass](https://github.com/BadgerBloke/dicedb-compass/blob/trunk/public/images/app.png)
 
-DiceDB insight is a desktop application that allows you to manage your DiceDB database.
+DiceDB compass is a desktop application that allows you to manage your DiceDB database.
