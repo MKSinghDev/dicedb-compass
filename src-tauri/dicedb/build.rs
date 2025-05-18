@@ -1,5 +1,4 @@
 use std::fs;
-use std::io::Write;
 use std::path::Path;
 
 fn main() {
@@ -27,18 +26,4 @@ fn main() {
             fs::rename(default_path, desired_path).unwrap();
         }
     }
-
-    // Generate mod.rs
-    generate_mod_file(&protos, out_dir).unwrap();
-}
-
-fn generate_mod_file(protos: &[&str], out_dir: &str) -> std::io::Result<()> {
-    let mut mod_file = fs::File::create(format!("{}/mod.rs", out_dir))?;
-    writeln!(mod_file, "// Auto-generated module file")?;
-
-    for proto in protos {
-        writeln!(mod_file, "pub mod {};", proto)?;
-    }
-
-    Ok(())
 }

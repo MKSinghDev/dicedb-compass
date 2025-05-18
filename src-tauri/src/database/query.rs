@@ -1,4 +1,4 @@
-use dicedb::connect_to_dicedb;
+use dicedb::{connect_to_dicedb, set_key};
 use serde_json::json;
 
 use super::DB;
@@ -7,8 +7,18 @@ use super::DB;
 pub async fn db_test() {
     println!("DB Test function invoked!");
 
-    connect_to_dicedb("127.0.0.1:7379").await.unwrap();
+    let mut client = connect_to_dicedb("127.0.0.1:7379").await.unwrap();
     println!("Connected to dicedb server! 💡💡");
+    set_key(
+        &mut client,
+        String::from("test1"),
+        "My first value".as_bytes().to_vec(),
+    )
+    .await
+    .unwrap();
+
+    println!("Set key successfully!");
+
     let db = DB::new().unwrap();
     db.set("test", json!(555)).unwrap();
 

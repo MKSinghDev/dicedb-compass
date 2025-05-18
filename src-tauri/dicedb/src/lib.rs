@@ -51,3 +51,35 @@ pub async fn perform_handshake(
 
     Ok(())
 }
+
+pub async fn set_key(
+    framed: &mut Framed<TcpStream, LengthDelimitedCodec>,
+    key: String,
+    value: Vec<u8>,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let set_cmd = Command {
+        cmd: "SET".to_string(),
+        args: vec![key, String::from_utf8(value)?],
+    };
+
+    let mut buf = BytesMut::new();
+    set_cmd.encode(&mut buf)?;
+
+    framed.send(buf.freeze()).await?;
+
+    if let Some(response) = framed.next().await {
+        let res_bytes = response?;
+        let res = wire::res::Result::decode(res_bytes.as_ref())?;
+
+        match res.response {
+            Some(wire::res::result::Response::HandshakeRes(_)) => {
+                println!("Handshake successful!");
+            }
+            other => {
+                println!("Unexpected response: {:?}", other);
+            }
+        }
+    }
+
+    Ok(())
+}
