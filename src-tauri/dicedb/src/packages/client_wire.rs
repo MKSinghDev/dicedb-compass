@@ -15,7 +15,7 @@ impl ClientWire {
         })
     }
 
-    pub fn send(&self, cmd: &wire::Command) -> Result<(), wire::WireError> {
+    pub fn send(&self, _cmd: &wire::Command) -> Result<(), wire::WireError> {
         if !self.connection.connected {
             return Err(wire::WireError {
                 kind: wire::ErrKind::Terminated,

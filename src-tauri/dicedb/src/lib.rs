@@ -171,7 +171,7 @@ impl Client {
     }
 
     pub fn watch(&mut self) -> Result<mpsc::Receiver<wire::Result>, DiceDbError> {
-        if let Some(tx) = &self.watch_tx {
+        if let Some(_tx) = &self.watch_tx {
             // Channel exists, clone the receiver
             let (_, rx) = mpsc::channel();
             return Ok(rx); // This is a simplification, in real code you'd need to clone the receiver properly

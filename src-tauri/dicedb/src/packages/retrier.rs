@@ -40,9 +40,7 @@ impl Retrier {
                         return Err(err);
                     }
 
-                    if let Err(retry_err) = on_retry() {
-                        return Err(retry_err);
-                    }
+                    on_retry()?;
 
                     warn!(
                         "Operation failed, retrying ({}/{}): {:?}",
