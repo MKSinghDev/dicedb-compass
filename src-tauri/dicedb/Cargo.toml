@@ -1,0 +1,9 @@
+[package]
+name = "dicedb"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+thiserror = "2.0.12"
+tracing = "0.1.41"
+uuid = { version = "1.16.0", features = ["v7"] }
