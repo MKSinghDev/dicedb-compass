@@ -825,6 +825,7 @@ version = "0.1.0"
 dependencies = [
  "bytes",
  "futures",
+ "log",
  "prost",
  "prost-build",
  "prost-types",

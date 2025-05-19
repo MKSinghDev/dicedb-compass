@@ -1,6 +1,6 @@
 use super::error::DiceDbError;
 use crate::{
-    client::Client,
+    Client,
     constant::{DEFAULT_BACKOFF_DURATION_SECS, DEFAULT_MAX_RETRIES},
 };
 use std::time::Duration;

@@ -84,11 +84,11 @@ impl Retrier {
 
     // Check if an error is retryable
     fn is_retryable(err: &ClientWireError) -> bool {
-        match err {
-            ClientWireError::NotEstablished(_) => true,
-            ClientWireError::Terminated(_) => true,
-            ClientWireError::TimeoutError(_) => true,
-            _ => false,
-        }
+        matches!(
+            err,
+            ClientWireError::NotEstablished(_)
+                | ClientWireError::Terminated(_)
+                | ClientWireError::TimeoutError(_)
+        )
     }
 }

@@ -111,7 +111,7 @@ impl ClientWire {
 
     pub async fn close(&mut self) {
         debug!("Closing connection");
-        if let Ok(_) = self.framed.get_mut().shutdown().await {
+        if (self.framed.get_mut().shutdown().await).is_ok() {
             debug!("Socket shutdown successful");
         } else {
             error!("Failed to properly shutdown socket");
