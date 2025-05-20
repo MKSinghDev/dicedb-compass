@@ -18,6 +18,7 @@ import {
 
 import Logo from './atoms/logo';
 import CloudDatabase from './icons/cloud-database';
+import ConnectionDialog from './molecules/connection-dialog';
 
 // This is sample data.
 const data = {
@@ -122,10 +123,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarContent>
                 <ScrollArea className="h-full">
                     <div className="p-2">
-                        <SidebarMenuButton variant="outline" tooltip="New Connection" className="w-full">
-                            <PlusCircle />
-                            <span className="whitespace-nowrap">New Connection</span>
-                        </SidebarMenuButton>
+                        <ConnectionDialog>
+                            <SidebarMenuButton variant="outline" tooltip="New Connection" className="w-full">
+                                <PlusCircle />
+                                <span className="whitespace-nowrap">New Connection</span>
+                            </SidebarMenuButton>
+                        </ConnectionDialog>
                     </div>
                     <NavMain items={data.connections} />
                 </ScrollArea>

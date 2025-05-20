@@ -1,15 +1,14 @@
+import { useLoaderData } from 'react-router';
+import type { Route } from '+/_layout+/+types';
 import { PlusCircle } from 'lucide-react';
 
-import { invoke } from '@tauri-apps/api/core';
 import { openUrl } from '@tauri-apps/plugin-opener';
 import Logo from '~/components/atoms/logo';
+import ConnectionDialog from '~/components/molecules/connection-dialog';
 import { Button } from '~/components/ui/button';
 
 export function Welcome() {
-    const handleDbTest = async () => {
-        const result = await invoke('db_test');
-        console.log(result);
-    };
+    const data = useLoaderData<Route.ComponentProps['loaderData']>();
     return (
         <main className="flex items-center justify-center pt-16 pb-4">
             <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
@@ -18,9 +17,11 @@ export function Welcome() {
                 </header>
                 <div className="max-w-fit w-full space-y-6 px-4">
                     <div className="flex flex-col gap-4">
-                        <Button onClick={handleDbTest}>
-                            <PlusCircle /> Connect a DiceDB
-                        </Button>
+                        <ConnectionDialog defaultOpen={!data}>
+                            <Button type="button">
+                                <PlusCircle /> Connect a DiceDB
+                            </Button>
+                        </ConnectionDialog>
                     </div>
                     <nav className="p-6 space-y-4">
                         <p className="leading-6 text-gray-700 dark:text-gray-200 text-center">What&apos;s next?</p>

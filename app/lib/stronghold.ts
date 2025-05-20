@@ -1,23 +1,30 @@
 import { appDataDir } from '@tauri-apps/api/path';
-import { Client, Store, Stronghold } from '@tauri-apps/plugin-stronghold';
+import { Store, Stronghold } from '@tauri-apps/plugin-stronghold';
 
-export const initStronghold = async () => {
+interface StrongholdType {
+    clientNmae: 'dicedb-compass';
+}
+
+const VAULT_PASSWORD = 'vault password';
+
+export const loadStronghold = async ({ clientNmae }: StrongholdType) => {
     const vaultPath = `${await appDataDir()}/vault.hold`;
-    const vaultPassword = 'vault password';
-    const stronghold = await Stronghold.load(vaultPath, vaultPassword);
+    const stronghold = await Stronghold.load(vaultPath, VAULT_PASSWORD);
 
-    let client: Client;
-    const clientName = 'name your client';
     try {
-        client = await stronghold.loadClient(clientName);
+        const client = await stronghold.loadClient(clientNmae);
+        return { stronghold, client };
     } catch {
-        client = await stronghold.createClient(clientName);
+        return null;
     }
+};
 
-    return {
-        stronghold,
-        client,
-    };
+export const initStronghold = async ({ clientNmae }: StrongholdType) => {
+    const vaultPath = `${await appDataDir()}/vault.hold`;
+    const stronghold = await Stronghold.load(vaultPath, VAULT_PASSWORD);
+
+    const client = await stronghold.createClient(clientNmae);
+    return { stronghold, client };
 };
 
 export const insertRecord = async (store: Store, key: string, value: string) => {

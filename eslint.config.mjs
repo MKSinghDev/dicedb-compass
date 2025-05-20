@@ -144,7 +144,7 @@ export default [
                         // Style imports
                         ['^.+\\.s?css$'],
                         // `react` first, `@remix-` second, then packages starting with a character
-                        ['^react$', '^@remix-', '^remix-', '^[a-z]'],
+                        ['^react$', '^react-', '^@remix-', '^remix-', '^[a-z+]'],
                         // Packages starting with `@`, '~' and '+'
                         ['^@', '^~'],
                         // Imports starting with `../`
