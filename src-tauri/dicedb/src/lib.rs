@@ -1,6 +1,6 @@
 mod constant;
 mod packages;
-mod wire;
+pub mod wire;
 use crate::{
     constant::{DEFAULT_BACKOFF_DURATION_SECS, DEFAULT_MAX_RETRIES, MAX_RESPONSE_SIZE},
     packages::{

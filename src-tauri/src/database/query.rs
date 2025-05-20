@@ -1,8 +1,7 @@
-use dicedb::Client;
+use super::DB;
+use dicedb::{wire::res::result::Response::KeysRes, Client};
 use log::info;
 use serde_json::json;
-
-use super::DB;
 
 #[tauri::command]
 pub async fn db_test() {
@@ -11,6 +10,7 @@ pub async fn db_test() {
     let new_client = Client::new("127.0.0.1", 7379)
         .await
         .expect("Failed to create dicedb client from struct");
+
     info!("New client created!");
 
     let res = new_client
@@ -18,6 +18,21 @@ pub async fn db_test() {
         .await;
 
     info!("Wire Result: {:?}", res);
+
+    let client = Client::builder("localhost", 7379)
+        .build()
+        .await
+        .expect("Failed to create dicedb client from builder");
+
+    let keys = client.fire_string("KEYS *").await;
+    let response = keys.response.unwrap();
+
+    info!("Response: {:?}", response);
+
+    if let KeysRes(keys_res) = response {
+        let keys_vec = keys_res.keys;
+        info!("Keys: {:?}", keys_vec);
+    }
 
     let db = DB::new().unwrap();
     db.set("test", json!(555)).unwrap();
