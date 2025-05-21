@@ -126,7 +126,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         <ConnectionDialog>
                             <SidebarMenuButton variant="outline" tooltip="New Connection" className="w-full">
                                 <PlusCircle />
-                                <span className="whitespace-nowrap">New Connection</span>
+                                <span className="whitespace-nowrap">Add new connection</span>
                             </SidebarMenuButton>
                         </ConnectionDialog>
                     </div>

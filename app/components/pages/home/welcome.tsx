@@ -19,7 +19,7 @@ export function Welcome() {
                     <div className="flex flex-col gap-4">
                         <ConnectionDialog defaultOpen={!data}>
                             <Button type="button">
-                                <PlusCircle /> Connect a DiceDB
+                                <PlusCircle /> Add new connection
                             </Button>
                         </ConnectionDialog>
                     </div>

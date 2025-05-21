@@ -23,17 +23,24 @@ export const initStronghold = async ({ clientNmae }: StrongholdType) => {
     const vaultPath = `${await appDataDir()}/vault.hold`;
     const stronghold = await Stronghold.load(vaultPath, VAULT_PASSWORD);
 
-    const client = await stronghold.createClient(clientNmae);
-    return { stronghold, client };
+    try {
+        const client = await stronghold.loadClient(clientNmae);
+        return { stronghold, client };
+    } catch {
+        const client = await stronghold.createClient(clientNmae);
+        return { stronghold, client };
+    }
 };
 
 export const insertRecord = async (store: Store, key: string, value: string) => {
+    console.log('insertRecord', store.path, store.client, key);
     const data = Array.from(new TextEncoder().encode(value));
     await store.insert(key, data);
 };
 
 export const getRecord = async (store: Store, key: string): Promise<string> => {
     const data = await store.get(key);
+    console.log('getRecord', data, store.path, store.client, key);
     if (!data) return '';
 
     return new TextDecoder().decode(new Uint8Array(data));

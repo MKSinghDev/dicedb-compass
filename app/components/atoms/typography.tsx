@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '~/lib/utils';
 
-export type TypographyVariant = 'hero' | 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'blockquote' | 'code' | 'lead' | 'large' | 'small' | 'muted' | 'tiny';
+export type TypographyVariant = 'hero' | 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'blockquote' | 'code' | 'lead' | 'large' | 'small' | 'muted' | 'tiny' | 'error';
 
 // Mapping of variants to their default HTML elements
 const variantElementMap: Record<TypographyVariant, keyof JSX.IntrinsicElements> = {
@@ -20,6 +20,7 @@ const variantElementMap: Record<TypographyVariant, keyof JSX.IntrinsicElements> 
     small: 'small',
     muted: 'p',
     tiny: 'span',
+    error: 'span',
 };
 
 // Define typography variants using cva
@@ -39,6 +40,7 @@ export const typographyVariants = cva('', {
             small: 'text-sm font-medium leading-none',
             muted: 'text-sm text-muted-foreground',
             tiny: 'text-[10px] leading-3 text-muted-foreground',
+            error: 'text-[10px] leading-3 text-destructive-foreground',
         },
     },
     defaultVariants: {
