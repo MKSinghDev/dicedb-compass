@@ -17,7 +17,7 @@ export function Welcome() {
                 </header>
                 <div className="max-w-fit w-full space-y-6 px-4">
                     <div className="flex flex-col gap-4">
-                        <ConnectionDialog defaultOpen={!data}>
+                        <ConnectionDialog defaultOpen={!data?.length}>
                             <Button type="button">
                                 <PlusCircle /> Add new connection
                             </Button>

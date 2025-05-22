@@ -28,6 +28,15 @@ tauri-plugin-opener = "2.2.6"
 redb = "2.2.0"
 thiserror = "2.0.12"
 tauri-plugin-stronghold = "2"
+tokio = { version = "1.45.0", features = ["full"] }
+keyring = { version = "3.6.2", features = [
+    "apple-native",
+    "windows-native",
+    "tokio",
+    "crypto-rust",
+] }
+rand = "0.9.1"
+rand_chacha = "0.9.0"
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-single-instance = "2"
