@@ -1,9 +1,10 @@
 import './app.css';
 
-import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from 'remix-themes';
-import clsx from 'clsx';
 import type { LoaderFunctionArgs } from 'react-router';
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from 'remix-themes';
+import clsx from 'clsx';
+import { Toaster } from 'sonner';
 
 import { themeSessionResolver } from '~/server/session';
 
@@ -44,6 +45,7 @@ export const App = ({ loaderData }: { loaderData: Route.ComponentProps['loaderDa
             <body className="flex flex-col min-h-dvh antialiased">
                 <Outlet />
                 <ScrollRestoration />
+                <Toaster richColors />
                 <Scripts />
             </body>
         </html>

@@ -134,6 +134,7 @@ export default [
             'jsx-a11y/heading-has-content': 'off',
             'jsx-a11y/tabindex-no-positive': 'off',
             'no-unused-vars': 'off',
+            'react-hooks/exhaustive-deps': 'off',
             '@typescript-eslint/no-unused-vars': 'off', // We're using unused-imports instead
             'unused-imports/no-unused-imports': 'error',
             'unused-imports/no-unused-vars': ['warn', { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' }],

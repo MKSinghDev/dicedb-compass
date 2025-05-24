@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useActionData } from '@remix-run/react';
+import { useActionData } from 'react-router';
 import { CircleCheckBig, Info, ServerCrash, ShieldAlert } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -91,10 +91,10 @@ export const dispatchToast = (response: MessageResponse | null) => {
                 case 'error':
                 case 'info':
                 case 'warning':
-                    toast[type](message, { position: 'top-center', duration: 5000 });
+                    toast[type](message, { position: 'top-right', duration: 5000 });
                     break;
                 case 'validation':
-                    toast[response.status](message, { position: 'top-center', duration: 5000 });
+                    toast[response.status](message, { position: 'top-right', duration: 5000 });
                     break;
             }
         } else {

@@ -6,6 +6,7 @@ import { openUrl } from '@tauri-apps/plugin-opener';
 import Logo from '~/components/atoms/logo';
 import ConnectionDialog from '~/components/molecules/connection-dialog';
 import { Button } from '~/components/ui/button';
+import { ActionMessageToaster } from '~/lib/utils/message-handler/toaster';
 
 export function Welcome() {
     const data = useLoaderData<Route.ComponentProps['loaderData']>();
@@ -42,6 +43,7 @@ export function Welcome() {
                     </nav>
                 </div>
             </div>
+            <ActionMessageToaster />
         </main>
     );
 }
