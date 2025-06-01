@@ -1,4 +1,4 @@
-use super::DB;
+use crate::database::db::DB;
 use dicedb::{wire::res::result::Response::KeysRes, Client};
 use log::info;
 use serde_json::json;

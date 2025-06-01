@@ -1,0 +1,79 @@
+use crate::packages::{
+    crypto::{decrypt, encrypt},
+    error::AppError,
+    models::ConnectionConfig,
+};
+use redb::{Database, ReadableTable, TableDefinition};
+use serde_json;
+use std::path::PathBuf;
+
+const CONFIG_TABLE: TableDefinition<&str, &[u8]> = TableDefinition::new("connections");
+
+pub struct ConfigDB {
+    db: Database,
+    key: [u8; 32],
+}
+
+impl ConfigDB {
+    pub fn new(db_path: PathBuf, encryption_key: [u8; 32]) -> Result<ConfigDB, AppError> {
+        let db = Database::create(db_path)?;
+        Ok(ConfigDB {
+            db,
+            key: encryption_key,
+        })
+    }
+
+    pub fn open(db_path: PathBuf, encryption_key: [u8; 32]) -> Result<Self, AppError> {
+        let db = Database::open(db_path)?;
+        Ok(Self {
+            db,
+            key: encryption_key,
+        })
+    }
+
+    pub fn add_connection(&self, config: ConnectionConfig) -> Result<(), AppError> {
+        let write_txn = self.db.begin_write()?;
+        {
+            let mut table = write_txn.open_table(CONFIG_TABLE)?;
+            let encrypted = encrypt(&config.conn_string, &self.key)?;
+            let mut copy = config.clone();
+            copy.conn_string = encrypted;
+            let serialized = serde_json::to_vec(&copy)?;
+            table.insert(config.name.as_str(), serialized.as_slice())?;
+        }
+        write_txn.commit()?;
+        Ok(())
+    }
+
+    pub fn get_connection(&self, name: &str) -> Result<ConnectionConfig, AppError> {
+        let txn = self.db.begin_read()?;
+        let table = txn.open_table(CONFIG_TABLE)?;
+        if let Some(bytes) = table.get(name)? {
+            let mut config: ConnectionConfig = serde_json::from_slice(bytes.value())?;
+            config.conn_string = decrypt(&config.conn_string, &self.key)?;
+            Ok(config)
+        } else {
+            Err(AppError::NotFound(name.to_string()))
+        }
+    }
+
+    pub fn list_connections(&self) -> Result<Vec<String>, AppError> {
+        let txn = self.db.begin_read()?;
+        let table = txn.open_table(CONFIG_TABLE)?;
+        let mut names = vec![];
+        for entry in table.iter()? {
+            let (key, _) = entry?;
+            names.push(key.value().to_string());
+        }
+        Ok(names)
+    }
+
+    pub fn remove_connection(&self, name: &str) -> Result<bool, AppError> {
+        let txn = self.db.begin_write()?;
+        let mut table = txn.open_table(CONFIG_TABLE)?;
+        let result = table.remove(name)?.is_some();
+        drop(table);
+        txn.commit()?;
+        Ok(result)
+    }
+}
