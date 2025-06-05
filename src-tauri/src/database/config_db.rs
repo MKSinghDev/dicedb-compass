@@ -1,11 +1,14 @@
-use crate::packages::{
-    crypto::{decrypt, encrypt},
-    error::AppError,
-    models::ConnectionConfig,
+use crate::{
+    packages::{
+        crypto::{decrypt, encrypt},
+        error::AppError,
+        models::ConnectionConfig,
+    },
+    utils::password::get_password_from_keychain,
 };
 use redb::{Database, ReadableTable, TableDefinition};
 use serde_json;
-use std::path::PathBuf;
+use tauri::path::SafePathBuf;
 
 const CONFIG_TABLE: TableDefinition<&str, &[u8]> = TableDefinition::new("connections");
 
@@ -15,20 +18,24 @@ pub struct ConfigDB {
 }
 
 impl ConfigDB {
-    pub fn new(db_path: PathBuf, encryption_key: [u8; 32]) -> Result<ConfigDB, AppError> {
+    pub async fn new(db_path: &SafePathBuf) -> Result<Self, AppError> {
         let db = Database::create(db_path)?;
-        Ok(ConfigDB {
-            db,
-            key: encryption_key,
-        })
+        let key = get_password_from_keychain()
+            .await?
+            .as_bytes()
+            .try_into()
+            .map_err(|_| AppError::ByteArrayConversionError)?;
+        Ok(ConfigDB { db, key })
     }
 
-    pub fn open(db_path: PathBuf, encryption_key: [u8; 32]) -> Result<Self, AppError> {
+    pub async fn open(db_path: &SafePathBuf) -> Result<Self, AppError> {
         let db = Database::open(db_path)?;
-        Ok(Self {
-            db,
-            key: encryption_key,
-        })
+        let key = get_password_from_keychain()
+            .await?
+            .as_bytes()
+            .try_into()
+            .map_err(|_| AppError::ByteArrayConversionError)?;
+        Ok(ConfigDB { db, key })
     }
 
     pub fn add_connection(&self, config: ConnectionConfig) -> Result<(), AppError> {

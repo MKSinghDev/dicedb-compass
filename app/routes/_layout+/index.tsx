@@ -2,10 +2,11 @@ import { data } from 'react-router';
 import type { Route } from '+/_layout+/+types';
 
 import { parseWithZod } from '@conform-to/zod/v4';
+import { invoke } from '@tauri-apps/api/core';
 import type { Action } from '~/components/pages/home/interface';
 import { Welcome } from '~/components/pages/home/welcome';
+import { getConnectionsName } from '~/lib/commands/connection';
 import { schema } from '~/lib/schema/connection';
-import { getKeys, getSecret, hasStoredPassword, isStrongholdReady, saveSecret } from '~/lib/stronghold';
 import { Message } from '~/lib/utils/message-handler';
 
 export function meta() {
@@ -13,12 +14,9 @@ export function meta() {
 }
 
 export const clientLoader = async () => {
-    const passStored = await hasStoredPassword();
-    const isStrReady = await isStrongholdReady();
-
-    const keys = await getKeys();
-    console.log('PASS STORED', { passStored, isStrReady, keys });
-    return keys;
+    const connections = await getConnectionsName();
+    console.log('PASS STORED', { connections });
+    return data(connections);
 };
 
 export const clientAction = async ({ request }: Route.ClientActionArgs) => {
@@ -35,15 +33,25 @@ export const clientAction = async ({ request }: Route.ClientActionArgs) => {
         case 'save': {
             try {
                 console.log('SAVE', key);
-                const res = await saveSecret(key, JSON.stringify(parsedData.value));
-                const keys = await getKeys();
-                const secret = await getSecret(key);
-                console.log('KEYS', { res, keys, secret });
-                return data(res ? Message.success('Secret saved successfully') : Message.error('Failed to save secret'));
+                const { name, host, port } = parsedData.value;
+                const res = invoke('db_test', { config: { name, conn_string: `${host}:${port}`, history_depth: 10 } });
+                console.log('KEYS', { res });
+                return data(Message.success('Secret saved successfully'));
             } catch (error) {
                 console.error('Failed to save secret:', error);
                 return data(Message.error('Something went wrong while saving secret'));
             }
+        }
+        case 'connect': {
+            try {
+                console.log('CONNECT', key);
+                const { name, host, port } = parsedData.value;
+                const res = invoke('db_test', { config: { name, conn_string: `${host}:${port}`, history_depth: 10 } });
+                console.log('Connection Addition Response:', res);
+            } catch (err) {
+                console.log('This is error', err);
+            }
+            break;
         }
         default: {
             return data(Message.warning('Invalid action'));

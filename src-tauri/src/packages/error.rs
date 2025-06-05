@@ -27,6 +27,16 @@ pub enum AppError {
     Utf8Error(#[from] std::string::FromUtf8Error),
     #[error("Invalid format: expected nonce:ciphertext")]
     InvalidFormat,
+
+    // Keyring errors
+    #[error("Keyring Error: Failed to create keyring entry")]
+    KeyringEntryError,
+    #[error("Keyring Error: Failed to retrieve password from keychain")]
+    KeyringRetrievalError,
+
+    // Conversion
+    #[error("Conversion Error: Password to byte array conversion failed")]
+    ByteArrayConversionError,
 }
 
 // You'll need to update the From implementations for the boxed variants

@@ -1,7 +1,18 @@
+use crate::packages::error::AppError;
+
 use super::constants::{CHARSET, KEYRING_SERVICE, KEYRING_USERNAME};
 use keyring::Entry;
 use rand::{Rng, SeedableRng};
 use rand_chacha::ChaCha20Rng;
+
+pub async fn init_keychain() {
+    if get_password_from_keychain().await.is_err() {
+        let pass = generate_secure_password(32);
+        store_password_in_keychain(&pass)
+            .await
+            .expect("Failed to initialize keychain!");
+    }
+}
 
 /// Generate a cryptographically secure random password
 pub fn generate_secure_password(length: usize) -> String {
@@ -28,13 +39,13 @@ pub async fn store_password_in_keychain(password: &str) -> Result<(), String> {
 }
 
 /// Retrieve password from system keychain
-pub async fn get_password_from_keychain() -> Result<String, String> {
-    let entry = Entry::new(KEYRING_SERVICE, KEYRING_USERNAME)
-        .map_err(|e| format!("Failed to create keyring entry: {}", e))?;
+pub async fn get_password_from_keychain() -> Result<String, AppError> {
+    let entry =
+        Entry::new(KEYRING_SERVICE, KEYRING_USERNAME).map_err(|_| AppError::KeyringEntryError)?;
 
     entry
         .get_password()
-        .map_err(|e| format!("Failed to retrieve password from keychain: {}", e))
+        .map_err(|_| AppError::KeyringRetrievalError)
 }
 
 /// Delete password from system keychain

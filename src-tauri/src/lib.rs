@@ -1,15 +1,19 @@
 pub mod database;
 mod packages;
+mod queries;
 mod store;
 mod utils;
 
-use database::query::db_test;
+use database::config_db::ConfigDB;
+use packages::error::AppError;
+use queries::connection::{db_test, get_connections_name};
 use store::stronghold::{
     auto_init_stronghold, get_keys, get_secret, has_stored_password, init_stronghold,
     is_stronghold_initialized, is_stronghold_ready, lock_stronghold, remove_secret,
-    reset_stronghold, save_secret, unlock_stronghold, StrongholdState,
+    reset_stronghold, save_secret, unlock_stronghold,
 };
-use tauri::Manager;
+use tauri::{path::SafePathBuf, Manager};
+use utils::{constants::CONFIG_DB_PATH, password::init_keychain};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -29,15 +33,25 @@ pub fn run() {
                         .build(),
                 )?;
             }
-            let salt_path = app
-                .path()
-                .app_local_data_dir()
-                .expect("could not resolve app local data path")
-                .join("salt.txt");
-            app.handle()
-                .plugin(tauri_plugin_stronghold::Builder::with_argon2(&salt_path).build())?;
 
-            app.manage(StrongholdState::new());
+            let config_db = tauri::async_runtime::block_on(async {
+                init_keychain().await;
+                match SafePathBuf::new(CONFIG_DB_PATH.into()) {
+                    Ok(config_path) => {
+                        // Try to open existing config DB first, then create new if it fails
+                        match ConfigDB::open(&config_path).await {
+                            Ok(db) => Ok(db),
+                            Err(_) => {
+                                // If opening fails, create a new one
+                                ConfigDB::new(&config_path).await
+                            }
+                        }
+                    }
+                    Err(_) => Err(AppError::InvalidFormat),
+                }
+            })?;
+
+            app.manage(config_db);
 
             let app_handle = app.handle().clone();
             tauri::async_runtime::spawn(async move {
@@ -51,6 +65,7 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             db_test,
+            get_connections_name,
             has_stored_password,
             init_stronghold,
             is_stronghold_initialized,
