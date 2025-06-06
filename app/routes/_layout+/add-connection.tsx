@@ -1,9 +1,11 @@
 import { data } from 'react-router';
+import { Fragment } from 'react/jsx-runtime';
 
 import { parseWithZod } from '@conform-to/zod/v4';
 import { invoke } from '@tauri-apps/api/core';
 import ConnectionDialog from '~/components/molecules/connection-dialog';
 import type { Action } from '~/components/pages/home/interface';
+import { saveConnection } from '~/lib/commands/connection';
 import { schema } from '~/lib/schema/connection';
 import { useRefreshConnections } from '~/lib/stores/connections';
 import { Message } from '~/lib/utils/message-handler';
@@ -20,9 +22,9 @@ export const clientAction = async ({ request }: Route.ActionArgs) => {
         case 'save': {
             try {
                 const { name, host, port } = parsedData.value;
-                invoke('db_test', { config: { name, conn_string: `${host}:${port}`, history_depth: 10 } });
+                const res = await saveConnection({ name, conn_string: `${host}:${port}`, history_depth: 10 });
 
-                return data(Message.success('Secret saved successfully'));
+                return data(res ? Message.success('Secret saved successfully') : Message.error('Failed to save connection details'));
             } catch {
                 return data(Message.error('Something went wrong while saving secret'));
             }
@@ -47,7 +49,11 @@ const AddConnectionPage = ({ actionData }: Route.ComponentProps) => {
     if (actionData) {
         refreshConnections();
     }
-    return <ConnectionDialog defaultOpen />;
+    return (
+        <Fragment>
+            <ConnectionDialog defaultOpen />
+        </Fragment>
+    );
 };
 
 export default AddConnectionPage;

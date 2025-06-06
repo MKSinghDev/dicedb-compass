@@ -34,7 +34,7 @@ impl ConfigDB {
         Ok(ConfigDB { db, key })
     }
 
-    pub fn add_connection(&self, config: ConnectionConfig) -> Result<(), AppError> {
+    pub fn add_connection(&self, config: ConnectionConfig) -> Result<bool, AppError> {
         let write_txn = self.db.begin_write()?;
         {
             let mut table = write_txn.open_table(CONFIG_TABLE)?;
@@ -44,7 +44,7 @@ impl ConfigDB {
             table.insert(config.name.as_str(), serialized.as_slice())?;
         }
         write_txn.commit()?;
-        Ok(())
+        Ok(true)
     }
 
     pub fn get_connection(&self, name: &str) -> Result<ConnectionConfig, AppError> {

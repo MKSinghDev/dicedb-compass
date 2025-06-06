@@ -3,7 +3,7 @@ pub mod database;
 mod package;
 mod util;
 
-use command::connection::{db_test, get_connections};
+use command::connection::{db_test, get_connections, save_connections};
 use database::config_db::ConfigDB;
 use package::error::AppError;
 use tauri::{path::SafePathBuf, Manager};
@@ -48,7 +48,11 @@ pub fn run() {
             app.manage(config_db);
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![db_test, get_connections,])
+        .invoke_handler(tauri::generate_handler![
+            db_test,
+            save_connections,
+            get_connections,
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
