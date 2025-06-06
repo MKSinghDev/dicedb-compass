@@ -14,7 +14,7 @@ export const clientLoader = async () => {
     if (connections?.length) {
         return data(connections);
     }
-    redirect('/add-connection');
+    throw redirect('/add-connection');
 };
 
 export default function Home({ loaderData }: Route.ComponentProps) {

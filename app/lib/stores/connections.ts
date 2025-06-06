@@ -29,7 +29,7 @@ const useConnectionsStore = create<ConnectionsStore>()(
                 set({ connections });
             },
             refreshConnections: async () => {
-                const connections = await getConnections();
+                const connections = (await getConnections()) || [];
                 set({ connections });
             },
         })),

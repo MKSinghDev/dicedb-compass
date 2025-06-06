@@ -12,22 +12,18 @@ export function NavMain() {
         <SidebarGroup>
             <SidebarGroupLabel>Connections</SidebarGroupLabel>
             <SidebarMenu>
-                {connections.map(connection => {
-                    console.log('PATHNAME', decodeURIComponent(pathname), connection.name);
-
-                    return (
-                        <Collapsible key={connection.name} asChild defaultOpen={true} className="group/collapsible">
-                            <SidebarMenuItem>
-                                <SidebarMenuButton tooltip={connection.name} isActive={decodeURIComponent(pathname).includes(connection.name)} asChild>
-                                    <Link to={`/${connection.name}`}>
-                                        <DatabaseZap />
-                                        <span className="whitespace-nowrap">{connection.name}</span>
-                                    </Link>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                        </Collapsible>
-                    );
-                })}
+                {connections?.map(connection => (
+                    <Collapsible key={connection.name} asChild defaultOpen={true} className="group/collapsible">
+                        <SidebarMenuItem>
+                            <SidebarMenuButton tooltip={connection.name} isActive={decodeURIComponent(pathname).includes(connection.name)} asChild>
+                                <Link to={`/${connection.name}`}>
+                                    <DatabaseZap />
+                                    <span className="whitespace-nowrap">{connection.name}</span>
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    </Collapsible>
+                ))}
             </SidebarMenu>
         </SidebarGroup>
     );
