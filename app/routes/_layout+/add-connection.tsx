@@ -7,7 +7,6 @@ import type { Action } from '~/components/pages/home/interface';
 import { connect, saveAndConnect, saveConnection } from '~/lib/commands/connection';
 import { schema } from '~/lib/schema/connection';
 import { useRefreshConnections } from '~/lib/stores/connections';
-import { sleep } from '~/lib/utils';
 import { Message } from '~/lib/utils/message-handler';
 import { ActionMessageToaster } from '~/lib/utils/message-handler/toaster';
 
@@ -19,7 +18,6 @@ export const clientAction = async ({ request }: Route.ActionArgs) => {
     const parsedData = parseWithZod(formData, { schema });
     if (parsedData.status !== 'success') return data(null);
 
-    await sleep(5000);
     switch (action) {
         case 'save': {
             try {
