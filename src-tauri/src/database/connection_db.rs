@@ -3,7 +3,7 @@ use redb::{Database, ReadableTable, ReadableTableMetadata, TableDefinition};
 use serde_json::Value;
 use std::path::PathBuf;
 
-use crate::packages::error::AppError;
+use crate::package::error::AppError;
 
 const HISTORY_TABLE: TableDefinition<&str, &[u8]> = TableDefinition::new("history");
 

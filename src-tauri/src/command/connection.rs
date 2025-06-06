@@ -1,10 +1,6 @@
-use crate::{
-    database::{config_db::ConfigDB, db::DB},
-    packages::models::ConnectionConfig,
-};
+use crate::{database::config_db::ConfigDB, package::model::ConnectionConfig};
 use dicedb::{wire::res::result::Response::KeysRes, Client};
 use log::{error, info};
-use serde_json::json;
 
 #[tauri::command]
 pub async fn db_test(
@@ -57,19 +53,13 @@ pub async fn db_test(
         info!("Keys: {:?}", keys_vec);
     }
 
-    let db = DB::new().unwrap();
-    db.set("test", json!(555)).unwrap();
-
-    let value = db.get("test").unwrap();
-    info!("This is the value: {:?}", value);
-
     Ok(())
 }
 
 #[tauri::command]
-pub async fn get_connections_name(
+pub async fn get_connections(
     config_db: tauri::State<'_, ConfigDB>,
-) -> Result<Vec<String>, String> {
+) -> Result<Vec<ConnectionConfig>, String> {
     config_db.list_connections().map_err(|e| {
         error!("Failed to get the connection {:?}", e);
         format!("Failed to get the connections: {:?}", e)

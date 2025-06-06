@@ -1,5 +1,6 @@
 import { invoke } from '@tauri-apps/api/core';
+import type { ConnectionConfig } from '~/lib/stores/connections';
 
-export const getConnectionsName = async () => {
-    return invoke('get_connections_name');
+export const getConnections = async () => {
+    return invoke<ConnectionConfig[]>('get_connections');
 };

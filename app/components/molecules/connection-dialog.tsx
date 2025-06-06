@@ -1,29 +1,33 @@
 import { type ReactNode } from 'react';
+import { useNavigate } from 'react-router';
 import { DatabaseZap } from 'lucide-react';
 
 import Loader from '~/components/atoms/loader';
 import ConnectionForm from '~/components/molecules/connection-form';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '~/components/ui/dialog';
 
-const ConnectionDialog = ({ children, defaultOpen }: { children: ReactNode; defaultOpen?: boolean }) => (
-    <Dialog defaultOpen={defaultOpen}>
-        <DialogTrigger asChild>{children}</DialogTrigger>
-        <DialogContent className="p-0">
-            <div className="relative p-6 space-y-6">
-                <div className="flex items-center gap-2">
-                    <div className="flex size-11 shrink-0 items-center justify-center rounded-full border" aria-hidden="true">
-                        <DatabaseZap className="opacity-80" size={16} />
+const ConnectionDialog = ({ children, defaultOpen }: { children?: ReactNode; defaultOpen?: boolean }) => {
+    const navigate = useNavigate();
+    return (
+        <Dialog defaultOpen={defaultOpen} onOpenChange={() => navigate(-1)}>
+            {children ? <DialogTrigger asChild>{children}</DialogTrigger> : null}
+            <DialogContent className="p-0">
+                <div className="relative p-6 space-y-6">
+                    <div className="flex items-center gap-2">
+                        <div className="flex size-11 shrink-0 items-center justify-center rounded-full border" aria-hidden="true">
+                            <DatabaseZap className="opacity-80" size={16} />
+                        </div>
+                        <DialogHeader>
+                            <DialogTitle className="text-left">New Connection</DialogTitle>
+                            <DialogDescription className="text-left">Manage your connection settings</DialogDescription>
+                        </DialogHeader>
                     </div>
-                    <DialogHeader>
-                        <DialogTitle className="text-left">New Connection</DialogTitle>
-                        <DialogDescription className="text-left">Manage your connection settings</DialogDescription>
-                    </DialogHeader>
+                    <ConnectionForm />
+                    <Loader />
                 </div>
-                <ConnectionForm />
-                <Loader />
-            </div>
-        </DialogContent>
-    </Dialog>
-);
+            </DialogContent>
+        </Dialog>
+    );
+};
 
 export default ConnectionDialog;

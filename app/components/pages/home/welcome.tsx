@@ -1,15 +1,12 @@
-import { useLoaderData } from 'react-router';
-import type { Route } from '+/_layout+/+types';
+import { Link } from 'react-router';
 import { PlusCircle } from 'lucide-react';
 
 import { openUrl } from '@tauri-apps/plugin-opener';
 import Logo from '~/components/atoms/logo';
-import ConnectionDialog from '~/components/molecules/connection-dialog';
-import { Button } from '~/components/ui/button';
+import { Button, buttonVariants } from '~/components/ui/button';
 import { ActionMessageToaster } from '~/lib/utils/message-handler/toaster';
 
 export function Welcome() {
-    const data = useLoaderData<Route.ComponentProps['loaderData']>();
     return (
         <main className="flex items-center justify-center pt-16 pb-4">
             <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
@@ -18,11 +15,9 @@ export function Welcome() {
                 </header>
                 <div className="max-w-fit w-full space-y-6 px-4">
                     <div className="flex flex-col gap-4">
-                        <ConnectionDialog defaultOpen={!data?.length}>
-                            <Button type="button">
-                                <PlusCircle /> Add new connection
-                            </Button>
-                        </ConnectionDialog>
+                        <Link to="/add-connection" className={buttonVariants()}>
+                            <PlusCircle /> Add new connection
+                        </Link>
                     </div>
                     <nav className="p-6 space-y-4">
                         <p className="leading-6 text-gray-700 dark:text-gray-200 text-center">What&apos;s next?</p>

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router';
 import { Bell, Database, DatabaseZap, type LucideIcon, PlusCircle, ShieldQuestion } from 'lucide-react';
 
 import { NavMain } from '~/components/nav-main';
@@ -18,7 +19,6 @@ import {
 
 import Logo from './atoms/logo';
 import CloudDatabase from './icons/cloud-database';
-import ConnectionDialog from './molecules/connection-dialog';
 
 // This is sample data.
 const data = {
@@ -123,14 +123,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarContent>
                 <ScrollArea className="h-full">
                     <div className="p-2">
-                        <ConnectionDialog>
-                            <SidebarMenuButton variant="outline" tooltip="New Connection" className="w-full">
+                        <SidebarMenuButton variant="outline" tooltip="New Connection" className="w-full" asChild>
+                            <Link to="/add-connection">
                                 <PlusCircle />
                                 <span className="whitespace-nowrap">Add new connection</span>
-                            </SidebarMenuButton>
-                        </ConnectionDialog>
+                            </Link>
+                        </SidebarMenuButton>
                     </div>
-                    <NavMain items={data.connections} />
+                    <NavMain />
                 </ScrollArea>
             </SidebarContent>
             <SidebarFooter>

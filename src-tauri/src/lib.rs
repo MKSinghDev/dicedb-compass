@@ -1,19 +1,13 @@
+mod command;
 pub mod database;
-mod packages;
-mod queries;
-mod store;
-mod utils;
+mod package;
+mod util;
 
+use command::connection::{db_test, get_connections};
 use database::config_db::ConfigDB;
-use packages::error::AppError;
-use queries::connection::{db_test, get_connections_name};
-use store::stronghold::{
-    auto_init_stronghold, get_keys, get_secret, has_stored_password, init_stronghold,
-    is_stronghold_initialized, is_stronghold_ready, lock_stronghold, remove_secret,
-    reset_stronghold, save_secret, unlock_stronghold,
-};
+use package::error::AppError;
 use tauri::{path::SafePathBuf, Manager};
-use utils::{constants::CONFIG_DB_PATH, password::init_keychain};
+use util::{constant::CONFIG_DB_PATH, password::init_keychain};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -52,32 +46,9 @@ pub fn run() {
             })?;
 
             app.manage(config_db);
-
-            let app_handle = app.handle().clone();
-            tauri::async_runtime::spawn(async move {
-                match auto_init_stronghold(app_handle).await {
-                    Ok(_) => println!("Stronghold auto-initialization completed"),
-                    Err(e) => println!("Stronghold auto-initialization failed: {}", e),
-                }
-            });
-
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![
-            db_test,
-            get_connections_name,
-            has_stored_password,
-            init_stronghold,
-            is_stronghold_initialized,
-            is_stronghold_ready,
-            lock_stronghold,
-            save_secret,
-            get_keys,
-            get_secret,
-            remove_secret,
-            reset_stronghold,
-            unlock_stronghold
-        ])
+        .invoke_handler(tauri::generate_handler![db_test, get_connections,])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

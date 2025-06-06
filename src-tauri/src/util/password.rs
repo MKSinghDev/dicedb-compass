@@ -1,6 +1,6 @@
-use crate::packages::error::AppError;
+use crate::package::error::AppError;
 
-use super::constants::{CHARSET, KEYRING_SERVICE, KEYRING_USERNAME};
+use super::constant::{CHARSET, KEYRING_SERVICE, KEYRING_USERNAME};
 use keyring::Entry;
 use rand::{Rng, SeedableRng};
 use rand_chacha::ChaCha20Rng;

@@ -37,6 +37,7 @@
         "@tauri-apps/plugin-stronghold": "~2",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
+        "immer": "^10.1.1",
         "isbot": "^5.1.28",
         "lucide-react": "^0.511.0",
         "react": "^19.1.0",
@@ -46,7 +47,8 @@
         "sonner": "^2.0.3",
         "tailwind-merge": "^3.3.0",
         "tailwindcss-animate": "^1.0.7",
-        "zod": "^3.25.13"
+        "zod": "^3.25.13",
+        "zustand": "^5.0.5"
     },
     "devDependencies": {
         "@commitlint/cli": "^19.8.1",

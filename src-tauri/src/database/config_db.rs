@@ -1,10 +1,6 @@
 use crate::{
-    packages::{
-        crypto::{decrypt, encrypt},
-        error::AppError,
-        models::ConnectionConfig,
-    },
-    utils::password::get_password_from_keychain,
+    package::{error::AppError, model::ConnectionConfig},
+    util::password::get_password_from_keychain,
 };
 use redb::{Database, ReadableTable, TableDefinition};
 use serde_json;
@@ -42,9 +38,8 @@ impl ConfigDB {
         let write_txn = self.db.begin_write()?;
         {
             let mut table = write_txn.open_table(CONFIG_TABLE)?;
-            let encrypted = encrypt(&config.conn_string, &self.key)?;
             let mut copy = config.clone();
-            copy.conn_string = encrypted;
+            copy.conn_string.encrypt(&self.key);
             let serialized = serde_json::to_vec(&copy)?;
             table.insert(config.name.as_str(), serialized.as_slice())?;
         }
@@ -57,22 +52,25 @@ impl ConfigDB {
         let table = txn.open_table(CONFIG_TABLE)?;
         if let Some(bytes) = table.get(name)? {
             let mut config: ConnectionConfig = serde_json::from_slice(bytes.value())?;
-            config.conn_string = decrypt(&config.conn_string, &self.key)?;
+            config.conn_string.decrypt(&self.key);
             Ok(config)
         } else {
             Err(AppError::NotFound(name.to_string()))
         }
     }
 
-    pub fn list_connections(&self) -> Result<Vec<String>, AppError> {
+    pub fn list_connections(&self) -> Result<Vec<ConnectionConfig>, AppError> {
         let txn = self.db.begin_read()?;
         let table = txn.open_table(CONFIG_TABLE)?;
-        let mut names = vec![];
-        for entry in table.iter()? {
-            let (key, _) = entry?;
-            names.push(key.value().to_string());
-        }
-        Ok(names)
+        table
+            .iter()?
+            .map(|entry| {
+                let (_, bytes) = entry?;
+                let mut config: ConnectionConfig = serde_json::from_slice(bytes.value())?;
+                config.conn_string.decrypt(&self.key);
+                Ok(config)
+            })
+            .collect()
     }
 
     pub fn remove_connection(&self, name: &str) -> Result<bool, AppError> {
