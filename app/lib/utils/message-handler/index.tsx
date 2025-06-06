@@ -1,5 +1,3 @@
-import { useEffect, useRef } from 'react';
-import { useActionData } from 'react-router';
 import { CircleCheckBig, Info, ServerCrash, ShieldAlert } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -39,6 +37,7 @@ export type MessageResponse =
     | {
           type: 'success' | 'error' | 'info' | 'warning';
           message: OtherMessageType;
+          data?: DataType;
       }
     | ({ type: 'validation' } & ErrorAndWarningValidationType)
     | ({ type: 'validation' } & SuccessValidationType)
@@ -47,20 +46,20 @@ export type MessageResponse =
 export class Message {
     static readonly GO_FOR = GO_FOR;
 
-    public static success(message: OtherMessageType): MessageResponse {
-        return { type: 'success', message };
+    public static success(message: OtherMessageType, data?: DataType): MessageResponse {
+        return { type: 'success', message, data };
     }
 
-    public static error(message: OtherMessageType): MessageResponse {
-        return { type: 'error', message };
+    public static error(message: OtherMessageType, data?: DataType): MessageResponse {
+        return { type: 'error', message, data };
     }
 
-    public static info(message: OtherMessageType): MessageResponse {
-        return { type: 'info', message };
+    public static info(message: OtherMessageType, data?: DataType): MessageResponse {
+        return { type: 'info', message, data };
     }
 
-    public static warning(message: OtherMessageType): MessageResponse {
-        return { type: 'warning', message };
+    public static warning(message: OtherMessageType, data?: DataType): MessageResponse {
+        return { type: 'warning', message, data };
     }
 
     public static redirect(url: string): MessageResponse {
@@ -293,23 +292,4 @@ export const renderMessage = (response: MessageResponse) => {
             }
         }
     }
-};
-
-export const ActionMessage = () => {
-    const data = useActionData<MessageResponse>();
-    return data && renderMessage(data);
-};
-
-export const ActionMessageToaster = () => {
-    const message = useActionData<MessageResponse>();
-    const hasDispatchedRef = useRef(false);
-
-    useEffect(() => {
-        if (hasDispatchedRef.current) return;
-        if (message) {
-            dispatchToast(message);
-            hasDispatchedRef.current = true;
-        }
-    }, [message]);
-    return null;
 };

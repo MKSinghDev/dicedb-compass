@@ -1,15 +1,21 @@
 import { type ReactNode } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useNavigation } from 'react-router';
 import { DatabaseZap } from 'lucide-react';
 
-import Loader from '~/components/atoms/loader';
 import ConnectionForm from '~/components/molecules/connection-form';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '~/components/ui/dialog';
 
 const ConnectionDialog = ({ children, defaultOpen }: { children?: ReactNode; defaultOpen?: boolean }) => {
     const navigate = useNavigate();
+    const { state } = useNavigation();
+
+    const handleOnOpenChange = () => {
+        if (state !== 'submitting') {
+            navigate(-1);
+        }
+    };
     return (
-        <Dialog defaultOpen={defaultOpen} onOpenChange={() => navigate(-1)}>
+        <Dialog defaultOpen={defaultOpen} onOpenChange={handleOnOpenChange} open={state === 'submitting' ? true : undefined}>
             {children ? <DialogTrigger asChild>{children}</DialogTrigger> : null}
             <DialogContent className="p-0">
                 <div className="relative p-6 space-y-6">
@@ -23,7 +29,6 @@ const ConnectionDialog = ({ children, defaultOpen }: { children?: ReactNode; def
                         </DialogHeader>
                     </div>
                     <ConnectionForm />
-                    <Loader />
                 </div>
             </DialogContent>
         </Dialog>

@@ -6,7 +6,7 @@ pub struct ConnectionString(String);
 
 impl ConnectionString {
     pub fn new(value: String) -> Self {
-        Self(value)
+        ConnectionString(value)
     }
 
     pub fn encrypt(&mut self, key: &[u8; 32]) {
@@ -23,6 +23,12 @@ impl ConnectionString {
 
     pub fn into_string(self) -> String {
         self.0
+    }
+
+    pub fn get_host_port(&self) -> Option<(&str, u16)> {
+        let (host, port_str) = self.0.split_once(':')?;
+        let port = port_str.parse::<u16>().ok()?;
+        Some((host, port))
     }
 }
 

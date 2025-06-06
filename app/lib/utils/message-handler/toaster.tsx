@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useActionData, useSearchParams } from 'react-router';
 
 import { getJsonData } from '~/lib/utils';
@@ -36,12 +36,20 @@ const ActionMessageToaster = () => {
     const message = useActionData<MessageResponse>();
     const hasDispatchedRef = useRef(false);
 
-    useEffect(() => {
+    const messageHandler = useCallback(() => {
         if (hasDispatchedRef.current) return;
         if (message) {
             dispatchToast(message);
             hasDispatchedRef.current = true;
         }
+    }, [message]);
+
+    useEffect(() => {
+        messageHandler();
+
+        return () => {
+            hasDispatchedRef.current = false;
+        };
     }, [message]);
     return null;
 };
