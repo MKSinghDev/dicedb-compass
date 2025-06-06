@@ -12,7 +12,7 @@ import { ActionMessageToaster } from '~/lib/utils/message-handler/toaster';
 
 import type { Route } from './+types/add-connection';
 
-export const clientAction = async ({ request }: Route.ActionArgs) => {
+export const clientAction = async ({ request }: Route.ClientActionArgs) => {
     const formData = await request.formData();
     const action = formData.get('action') as Action | null;
     const parsedData = parseWithZod(formData, { schema });
