@@ -59,9 +59,9 @@ pub async fn db_test(
 #[tauri::command]
 pub async fn get_connections(
     config_db: tauri::State<'_, ConfigDB>,
-) -> Result<Vec<ConnectionConfig>, String> {
-    config_db.list_connections().map_err(|e| {
-        error!("Failed to get the connection {:?}", e);
-        format!("Failed to get the connections: {:?}", e)
-    })
+) -> Result<Option<Vec<ConnectionConfig>>, String> {
+    match config_db.list_connections() {
+        Ok(conns) => Ok(Some(conns)),
+        Err(_) => Ok(None),
+    }
 }

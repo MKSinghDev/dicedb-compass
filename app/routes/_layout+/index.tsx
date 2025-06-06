@@ -11,7 +11,7 @@ export function meta() {
 
 export const clientLoader = async () => {
     const connections = await getConnections();
-    if (connections.length) {
+    if (connections?.length) {
         return data(connections);
     }
     redirect('/add-connection');
