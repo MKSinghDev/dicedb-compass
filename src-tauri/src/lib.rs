@@ -4,17 +4,21 @@ mod package;
 mod util;
 
 use command::{
-    connection::{connect, get_connections, save_and_connect, save_connection},
+    connection::{
+        add_connection, connect, get_active_connections, get_connections, save_and_connect,
+        save_connection,
+    },
     query::get_keys,
 };
 use database::config_db::ConfigDB;
-use package::error::AppError;
+use package::{connection_manager::create_connections_state, error::AppError};
 use tauri::{path::SafePathBuf, Manager};
 use util::{constant::CONFIG_DB_PATH, password::init_keychain};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .manage(create_connections_state())
         .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
             let _ = app
                 .get_webview_window("main")
@@ -52,8 +56,10 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            add_connection,
             connect,
             get_connections,
+            get_active_connections,
             save_and_connect,
             save_connection,
             // --- Query ---

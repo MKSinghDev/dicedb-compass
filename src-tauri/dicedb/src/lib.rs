@@ -20,7 +20,7 @@ use std::{sync::Arc, time::Duration};
 use tokio::sync::{Mutex, mpsc};
 use uuid::Uuid;
 
-// Client struct - main public API
+#[derive(Debug)]
 pub struct Client {
     id: String,
     main_wire: Arc<Mutex<ClientWire>>,

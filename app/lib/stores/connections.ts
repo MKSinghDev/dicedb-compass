@@ -15,7 +15,7 @@ interface ConnectionsState {
 }
 
 interface ConnectionsAction {
-    setConnections: (conn: ConnectionConfig[]) => void;
+    setConnections: (connections: ConnectionConfig[]) => void;
     refreshConnections: () => Promise<void>;
 }
 
@@ -25,12 +25,13 @@ const useConnectionsStore = create<ConnectionsStore>()(
     persist(
         immer(set => ({
             connections: [],
+            activeConnections: [],
             setConnections: connections => {
                 set({ connections });
             },
             refreshConnections: async () => {
-                const connections = (await getConnections()) || [];
-                set({ connections });
+                const connections = await getConnections();
+                set({ connections: connections || [] });
             },
         })),
         { name: 'connections' }

@@ -16,3 +16,11 @@ export const getConnections = async () => {
 export const saveAndConnect = async (config: ConnectionConfig) => {
     return invoke<boolean>('save_connection', { config });
 };
+
+export const addConnection = async (config: ConnectionConfig) => {
+    return invoke<boolean>('add_connection', { config });
+};
+
+export const getActiveConnections = async () => {
+    return invoke<string[]>('get_active_connections');
+};

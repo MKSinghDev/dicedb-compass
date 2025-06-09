@@ -111,6 +111,7 @@ export const dispatchToast = (response: MessageResponse | null) => {
                         duration,
                         closeButton: closable,
                         dismissible: dismiss,
+                        position: 'top-right',
                     });
                     break;
                 case 'validation':
@@ -119,6 +120,7 @@ export const dispatchToast = (response: MessageResponse | null) => {
                         duration,
                         closeButton: closable,
                         dismissible: dismiss,
+                        position: 'top-right',
                     });
                     break;
             }

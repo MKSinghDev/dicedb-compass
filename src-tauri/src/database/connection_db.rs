@@ -1,26 +1,30 @@
 use chrono::Utc;
 use redb::{Database, ReadableTable, ReadableTableMetadata, TableDefinition};
 use serde_json::Value;
-use std::path::PathBuf;
+use tauri::path::SafePathBuf;
 
 use crate::package::error::AppError;
 
 const HISTORY_TABLE: TableDefinition<&str, &[u8]> = TableDefinition::new("history");
 
-pub struct ConnectionDB {
-    db: Database,
-}
+#[derive(Debug)]
+pub struct ConnectionDB(Database);
 
 impl ConnectionDB {
-    pub fn open(db_path: PathBuf) -> Result<Self, AppError> {
+    pub fn new(db_path: &SafePathBuf) -> Result<Self, AppError> {
+        let db = Database::create(db_path)?;
+        Ok(ConnectionDB(db))
+    }
+
+    pub fn open(db_path: &SafePathBuf) -> Result<Self, AppError> {
         let db = Database::open(db_path)?;
-        Ok(Self { db })
+        Ok(ConnectionDB(db))
     }
 
     pub fn add_history(&self, value: Value) -> Result<(), AppError> {
         let ts = Utc::now().to_rfc3339();
         let data = serde_json::to_vec(&value)?;
-        let txn = self.db.begin_write()?;
+        let txn = self.0.begin_write()?;
         {
             let mut table = txn.open_table(HISTORY_TABLE)?;
             table.insert(ts.as_str(), data.as_slice())?;
@@ -30,7 +34,7 @@ impl ConnectionDB {
     }
 
     pub fn get_last_n(&self, n: usize) -> Result<Vec<Value>, AppError> {
-        let txn = self.db.begin_read()?;
+        let txn = self.0.begin_read()?;
         let table = txn.open_table(HISTORY_TABLE)?;
         let mut entries = table.iter()?.collect::<Result<Vec<_>, _>>()?;
         entries.reverse();
@@ -42,7 +46,7 @@ impl ConnectionDB {
     }
 
     pub fn clear(&self) -> Result<(), AppError> {
-        let txn = self.db.begin_write()?;
+        let txn = self.0.begin_write()?;
         {
             txn.delete_table(HISTORY_TABLE)?;
             txn.open_table(HISTORY_TABLE)?;
@@ -52,13 +56,13 @@ impl ConnectionDB {
     }
 
     pub fn len(&self) -> Result<usize, AppError> {
-        let txn = self.db.begin_read()?;
+        let txn = self.0.begin_read()?;
         let table = txn.open_table(HISTORY_TABLE)?;
         Ok(table.iter()?.count())
     }
 
     pub fn is_empty(&self) -> Result<bool, AppError> {
-        let txn = self.db.begin_read()?;
+        let txn = self.0.begin_read()?;
         let table = txn.open_table(HISTORY_TABLE)?;
         Ok(table.is_empty()?)
     }

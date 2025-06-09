@@ -11,6 +11,7 @@ use crate::wire::{cmd::Command, res::Result as WireResult};
 
 use super::error::ClientWireError;
 
+#[derive(Debug)]
 pub struct ClientWire {
     framed: Framed<TcpStream, LengthDelimitedCodec>,
     max_response_size: usize,
@@ -18,9 +19,8 @@ pub struct ClientWire {
 
 impl ClientWire {
     pub fn new(max_response_size: usize, host: &str, port: u16) -> Result<Self, ClientWireError> {
-        let rt = tokio::runtime::Runtime::new().map_err(|e| {
-            ClientWireError::IoError(std::io::Error::new(std::io::ErrorKind::Other, e))
-        })?;
+        let rt = tokio::runtime::Runtime::new()
+            .map_err(|e| ClientWireError::IoError(std::io::Error::other(e)))?;
 
         rt.block_on(async { Self::new_async(max_response_size, host, port).await })
     }
@@ -46,10 +46,10 @@ impl ClientWire {
         };
 
         stream.set_nodelay(true).map_err(|e| {
-            ClientWireError::IoError(std::io::Error::new(
-                std::io::ErrorKind::Other,
-                format!("Failed to set nodelay: {}", e),
-            ))
+            ClientWireError::IoError(std::io::Error::other(format!(
+                "Failed to set nodelay: {}",
+                e
+            )))
         })?;
 
         let framed = Framed::new(stream, LengthDelimitedCodec::new());

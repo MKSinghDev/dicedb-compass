@@ -1,4 +1,7 @@
-use crate::{database::config_db::ConfigDB, package::model::ConnectionConfig};
+use crate::{
+    database::config_db::ConfigDB,
+    package::{connection_manager::ConnectionManagerState, model::ConnectionConfig},
+};
 use dicedb::Client;
 
 #[tauri::command]
@@ -46,4 +49,21 @@ pub async fn save_and_connect(
     } else {
         Ok(false)
     }
+}
+
+#[tauri::command]
+pub async fn get_active_connections(
+    connections_state: tauri::State<'_, ConnectionManagerState>,
+) -> Result<Vec<String>, String> {
+    let manager = connections_state.read().await;
+    Ok(manager.list_connections())
+}
+
+#[tauri::command]
+pub async fn add_connection(
+    connections_state: tauri::State<'_, ConnectionManagerState>,
+    config: ConnectionConfig,
+) -> Result<bool, String> {
+    let mut manager = connections_state.write().await;
+    manager.add_connection(config).await
 }
