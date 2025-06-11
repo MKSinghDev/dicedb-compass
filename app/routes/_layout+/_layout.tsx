@@ -2,8 +2,7 @@ import { Outlet } from 'react-router';
 
 import { Separator } from '@radix-ui/react-separator';
 import { AppSidebar } from '~/components/app-sidebar';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from '~/components/ui/breadcrumb';
-import { ScrollArea } from '~/components/ui/scroll-area';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '~/components/ui/breadcrumb';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '~/components/ui/sidebar';
 
 const Layout = () => (
@@ -16,21 +15,17 @@ const Layout = () => (
                     <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
                     <Breadcrumb>
                         <BreadcrumbList>
-                            <BreadcrumbItem className="hidden md:block">
-                                <BreadcrumbLink href="#">Home</BreadcrumbLink>
+                            <BreadcrumbItem>
+                                <BreadcrumbLink href="#">Databases</BreadcrumbLink>
                             </BreadcrumbItem>
-                            {/* <BreadcrumbSeparator className="hidden md:block" /> */}
-                            {/* <BreadcrumbItem> */}
-                            {/*     <BreadcrumbPage>Data Fetching</BreadcrumbPage> */}
-                            {/* </BreadcrumbItem> */}
+                            <BreadcrumbSeparator />
+                            <BreadcrumbItem>Connection</BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
                 </div>
             </header>
             <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-                <ScrollArea className="h-full">
-                    <Outlet />
-                </ScrollArea>
+                <Outlet />
             </div>
         </SidebarInset>
     </SidebarProvider>

@@ -37,8 +37,8 @@ impl ConnectionManager {
         }
     }
 
-    pub async fn remove_connection(&mut self, config: &ConnectionConfig) -> bool {
-        if let Some(mut val) = self.0.remove(config.name.as_str()) {
+    pub async fn remove_connection(&mut self, connection_name: &str) -> bool {
+        if let Some(mut val) = self.0.remove(connection_name) {
             val.0.close().await;
             true
         } else {
@@ -46,8 +46,8 @@ impl ConnectionManager {
         }
     }
 
-    pub fn get_connection(&self, config: &ConnectionConfig) -> Option<&Client> {
-        match self.0.get(config.name.as_str()) {
+    pub fn get_connection(&self, connection_name: &str) -> Option<&Client> {
+        match self.0.get(connection_name) {
             Some(val) => Some(&val.0),
             None => None,
         }

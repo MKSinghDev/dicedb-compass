@@ -8,7 +8,7 @@ use command::{
         add_connection, connect, get_active_connections, get_connections, save_and_connect,
         save_connection,
     },
-    query::get_keys,
+    query::{get_key, get_keys},
 };
 use database::config_db::ConfigDB;
 use package::{connection_manager::create_connections_state, error::AppError};
@@ -63,7 +63,8 @@ pub fn run() {
             save_and_connect,
             save_connection,
             // --- Query ---
-            get_keys
+            get_keys,
+            get_key
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
