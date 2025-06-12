@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package cmd;
-
-message Command {
-    string cmd = 1;
-    repeated string args = 2;
-}
