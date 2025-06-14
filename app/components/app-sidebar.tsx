@@ -119,11 +119,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-            <SidebarContent>
+            <SidebarContent className="overflow-x-hidden">
                 <ScrollArea className="h-full">
                     <div className="p-2">
                         <SidebarMenuButton variant="outline" tooltip="New Connection" className="w-full" asChild>
-                            <Link to="/add-connection">
+                            <Link to="/connection/add">
                                 <PlusCircle />
                                 <span className="whitespace-nowrap">Add new connection</span>
                             </Link>

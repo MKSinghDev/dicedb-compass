@@ -1,6 +1,6 @@
-# DiceDB compass (Under development)
+# DiceDB Compass (Under development)
 
-![DiceDB compass](https://github.com/BadgerBloke/dicedb-compass/blob/trunk/public/images/app.jpg)
+![DiceDB Compass](https://github.com/BadgerBloke/dicedb-compass/blob/trunk/public/images/app.jpg)
 
 ## Add connection
 
@@ -18,4 +18,4 @@
 
 ![Key value](https://github.com/BadgerBloke/dicedb-compass/blob/trunk/public/images/key-value.jpg)
 
-DiceDB compass is a desktop application that allows you to manage your DiceDB database.
+DiceDB Compass is a desktop application that allows you to manage your DiceDB database.

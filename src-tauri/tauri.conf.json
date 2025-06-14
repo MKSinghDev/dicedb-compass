@@ -1,7 +1,7 @@
 {
     "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
     "productName": "dicedb-compass",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "identifier": "dicedb-compass.mksingh.dev",
     "build": {
         "frontendDist": "../build/client",
@@ -12,7 +12,7 @@
     "app": {
         "windows": [
             {
-                "title": "DiceDB compass",
+                "title": "DiceDB Compass",
                 "width": 800,
                 "height": 600,
                 "resizable": true,

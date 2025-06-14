@@ -5,10 +5,10 @@ mod util;
 
 use command::{
     connection::{
-        add_connection, connect, get_active_connections, get_connections, save_and_connect,
-        save_connection,
+        add_connection, connect, get_active_connections, get_connections, remove_connection,
+        save_and_connect, save_connection,
     },
-    query::{get_key, get_keys},
+    query::{add_key, get_key, get_keys, remove_key, search_key},
 };
 use database::config_db::ConfigDB;
 use package::{connection_manager::create_connections_state, error::AppError};
@@ -62,9 +62,13 @@ pub fn run() {
             get_active_connections,
             save_and_connect,
             save_connection,
+            remove_connection,
             // --- Query ---
             get_keys,
-            get_key
+            get_key,
+            search_key,
+            add_key,
+            remove_key,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

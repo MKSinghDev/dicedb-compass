@@ -67,3 +67,17 @@ pub async fn add_connection(
     let mut manager = connections_state.write().await;
     manager.add_connection(config).await
 }
+
+#[tauri::command]
+pub async fn remove_connection(
+    connections_state: tauri::State<'_, ConnectionManagerState>,
+    config_db: tauri::State<'_, ConfigDB>,
+    conn_name: &str,
+) -> Result<bool, String> {
+    let mut manager = connections_state.write().await;
+    manager.close_connection(conn_name).await;
+    let is_removed = config_db
+        .remove_connection(conn_name)
+        .expect("Failed to remove connection");
+    Ok(is_removed)
+}

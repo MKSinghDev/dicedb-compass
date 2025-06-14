@@ -1,4 +1,5 @@
 import { data } from 'react-router';
+import type { Route } from '+/_layout+/connection+/+types/add';
 import { Fragment } from 'react/jsx-runtime';
 
 import { parseWithZod } from '@conform-to/zod/v4';
@@ -9,8 +10,6 @@ import { schema } from '~/lib/schema/connection';
 import { useRefreshConnections } from '~/lib/stores/connections';
 import { Message } from '~/lib/utils/message-handler';
 import { ActionMessageToaster } from '~/lib/utils/message-handler/toaster';
-
-import type { Route } from './+types/add-connection';
 
 export const clientAction = async ({ request }: Route.ClientActionArgs) => {
     const formData = await request.formData();

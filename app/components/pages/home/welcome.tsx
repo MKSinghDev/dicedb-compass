@@ -15,7 +15,7 @@ export function Welcome() {
                 </header>
                 <div className="max-w-fit w-full space-y-6 px-4">
                     <div className="flex flex-col gap-4">
-                        <Link to="/add-connection" className={buttonVariants()}>
+                        <Link to="/connection/add" className={buttonVariants()}>
                             <PlusCircle /> Add new connection
                         </Link>
                     </div>
@@ -74,7 +74,7 @@ const resources = [
     },
     {
         href: 'https://github.com/BadgerBloke/dicedb-compass',
-        text: 'Give a star to DiceDB compass',
+        text: 'Give a star to DiceDB Compass',
         icon: (
             <svg width="20" height="20" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path

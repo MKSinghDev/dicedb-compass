@@ -6,7 +6,7 @@ import { getActiveConnections, getConnections } from '~/lib/commands/connection'
 import { useSetConnections } from '~/lib/stores/connections';
 
 export function meta() {
-    return [{ title: 'DiceDB compass | Developed by MKSingh' }, { name: 'description', content: 'DiceDB compass | Developed by MKSingh' }];
+    return [{ title: 'DiceDB Compass | Developed by MKSingh' }, { name: 'description', content: 'DiceDB Compass | Developed by MKSingh' }];
 }
 
 export const clientLoader = async () => {
@@ -15,7 +15,7 @@ export const clientLoader = async () => {
     if (connections?.length) {
         return data({ connections, activeConnections });
     }
-    throw redirect('/add-connection');
+    throw redirect('/connection/add');
 };
 
 export default function Home({ loaderData }: Route.ComponentProps) {

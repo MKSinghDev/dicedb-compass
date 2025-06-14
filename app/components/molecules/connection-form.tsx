@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Form, useActionData, useNavigation } from 'react-router';
-import type { Route } from '+/_layout+/+types/add-connection';
+import type { Route } from '+/_layout+/connection+/+types/add';
 import { CircleCheckBig } from 'lucide-react';
 
 import { useForm } from '@conform-to/react';

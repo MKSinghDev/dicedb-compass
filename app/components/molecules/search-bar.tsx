@@ -26,7 +26,7 @@ const SearchBar = () => {
     }, []);
 
     return (
-        <Form className="relative p-1">
+        <Form className="relative p-1 grow">
             <Input ref={inputRef} id={id} className="pe-11" placeholder="Filter by Key Name or Pattern" type="search" name="key" />
             <div className="text-muted-foreground pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-2">
                 <button

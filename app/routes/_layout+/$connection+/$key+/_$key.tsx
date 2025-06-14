@@ -11,13 +11,13 @@ export const clientLoader = async ({ params: { connection, key } }: Route.Client
 
 const ConnectionKeyPage = ({ loaderData, params: { key } }: Route.ComponentProps) => {
     return (
-        <Card className="w-full">
+        <Card className="w-full py-4 rounded-l-none border-l-0">
             <CardHeader className="sr-only">
                 <CardTitle>Value Card</CardTitle>
                 <CardDescription>Value of {decodeURIComponent(key)}</CardDescription>
             </CardHeader>
             <CardContent>
-                <span className={typographyVariants({ variant: 'h3' })}>{loaderData}</span>
+                <span className={typographyVariants({ variant: 'large' })}>{loaderData}</span>
             </CardContent>
         </Card>
     );

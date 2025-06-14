@@ -24,3 +24,7 @@ export const addConnection = async (config: ConnectionConfig) => {
 export const getActiveConnections = async () => {
     return invoke<string[]>('get_active_connections');
 };
+
+export const removeConnection = (connName: string) => {
+    return invoke<boolean>('remove_connection', { connName });
+};

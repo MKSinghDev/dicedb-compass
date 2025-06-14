@@ -50,8 +50,8 @@ const Logo = ({ size }: Props) => {
     return (
         <div className="flex items-center gap-2 h-12">
             <div className={cn(iconVariants({ size }))}>
-                <img src="/icon.png" alt="DiceDB compass" className="block w-full dark:hidden" />
-                <img src="/icon.png" alt="DiceDB compass" className="hidden w-full dark:block" />
+                <img src="/icon.png" alt="DiceDB Compass" className="block w-full dark:hidden" />
+                <img src="/icon.png" alt="DiceDB Compass" className="hidden w-full dark:block" />
             </div>
             <div className="flex items-center gap-2">
                 <h1 className={logoLabelVariants({ size })}>DiceDB</h1>

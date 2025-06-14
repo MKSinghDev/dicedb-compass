@@ -37,7 +37,7 @@ impl ConnectionManager {
         }
     }
 
-    pub async fn remove_connection(&mut self, connection_name: &str) -> bool {
+    pub async fn close_connection(&mut self, connection_name: &str) -> bool {
         if let Some(mut val) = self.0.remove(connection_name) {
             val.0.close().await;
             true
